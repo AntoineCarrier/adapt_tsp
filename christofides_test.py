@@ -4,7 +4,7 @@ import networkx as nx
 import json
 
 
-with open("skewed_w_dist_gi_4_12.json", 'r') as file:
+with open("N_4_B_0.03_s_-0.5_it_0_red_tsp_test_results.json", 'r') as file:
     data = json.load(file)
 graph = json_graph.adjacency_graph(data['N_4']['s_-2.0']['it_0'])
 
