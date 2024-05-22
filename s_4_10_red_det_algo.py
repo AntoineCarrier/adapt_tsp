@@ -10,7 +10,7 @@ import os
 import time
 
 import adapt_functions as af
-import red_hamil as H
+import reduced_tsp_hamiltonian as H
 
 def TSP_ver(N, fqubit, graph, path, energy, json_dic):
     path_edges = []
