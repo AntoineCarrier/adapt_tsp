@@ -10,7 +10,7 @@ import os
 import time
 
 import adapt_functions as af
-import hamiltonian as H
+import tsp_hamiltonian as H
 
 
 def parse_args():
