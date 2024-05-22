@@ -35,44 +35,48 @@ for N in [4, 5, 6, 8, 10, 12]:
 
             weight_av['{}_{}'.format(N, B)].append(np.average(weight_l['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]))
 
-            weight_err['{}_{}'.format(N, B)].append(np.std(weight_l['{}'.format(N)]['{}'.format(B)]['{}'.format(s)])/len(weight_l['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]))
+            weight_err['{}_{}'.format(N, B)].append(
+                np.std(weight_l['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]) / round(np.sqrt(len(
+                    weight_l['{}'.format(N)]['{}'.format(B)]['{}'.format(s)])),
+                    5))
         # print(np.average(i_counts['{}'.format(N)]['{}'.format(B)]['{}'.format(d)]))
-figure, axs = plt.subplots(6)
+figure, axs = plt.subplots(3, 2, figsize=(10, 8), dpi = 100)
 figure.suptitle(
-    'Renormalized weight of hamiltonian paths as a function of the graph density for multiple energy hierarchy '
-    'parameter values (B) and multiple graph sizes (N).',
+    "Ratio of hamiltonian path weights obtained with adapt Clifford and Christofides' algorithm.",
     weight='bold')
 
-for N in [4, 5, 6, 8, 10, 12]:
-    n = [4, 5, 6, 8, 10, 12]
+for i, axs in enumerate(axs.flatten()):
+    N = [4, 5, 6, 8, 10, 12]
 
-    index = int(n.index(N))
-    print(index)
 
-    axis1 = axs[index]
+    # axis1 = axs[index]
     B = [0.04, 0.05]
 
     x = np.arange(-2.0, 2.0, 0.5)
-    y1 = weight_av['{}_{}'.format(N, B[0])]
+    y1 = weight_av['{}_{}'.format(N[i], B[0])]
 
-    yerr1 = weight_err['{}_{}'.format(N, B[0])]
+    yerr1 = weight_err['{}_{}'.format(N[i], B[0])]
 
-    y2 = weight_av['{}_{}'.format(N, B[1])]
+    y2 = weight_av['{}_{}'.format(N[i], B[1])]
 
-    yerr2 = weight_err['{}_{}'.format(N, B[1])]
+    yerr2 = weight_err['{}_{}'.format(N[i], B[1])]
 
-    axis1.errorbar(x, y1, yerr1, marker="s", label='B = {}'.format(B[0]))
+    axs.errorbar(x, y1, yerr1, marker="s", label='B = {}'.format(B[0]))
 
-    axis1.errorbar(x, y2, yerr2, marker="s", label='B = {}'.format(B[1]))
+    axs.errorbar(x, y2, yerr2, marker="s", label='B = {}'.format(B[1]))
 
-    axis1.set_title('N = {}'.format(N), weight='bold')
-    axis1.set_ylabel('Path weight / N')
-    # axis1.set_xlabel('Graph density')
+    axs.set_title('N = {}'.format(N[i]), weight='bold')
+    axs.set_ylabel('Adapt/Christo.')
+    axs.set_xlabel('Graph Skewness')
 
+    axs.set_ylim(0.7, 2.55)
 
-#    Shrink current axis by 20%
-#    box = axis1.get_position()
-#  axis1.set_position([box.x0, box.y0, box.width, box.height * 0.9])
+    axs.set_xlim(-2.5, 2.5)
+    if i == 3:
+        axs.legend(loc='best', bbox_to_anchor=(0.5, 0., 0.5, 0.5))
 
-
+    #    Shrink current axis by 20%
+    #    box = axis1.get_position()
+    #  axis1.set_position([box.x0, box.y0, box.width, box.height * 0.9])
+plt.tight_layout()
 plt.show()
