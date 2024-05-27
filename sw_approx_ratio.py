@@ -10,7 +10,7 @@ ratio_err = {}
 for N in [4]:
     ratios['{}'.format(N)] = {}
     counts['{}'.format(N)] = {}
-    for B in np.arange(0.03, 0.04, 0.01):
+    for B in [0.04]:
         B = round(B, 2)
         ratios['{}'.format(N)]['{}'.format(B)] = {}
         counts['{}'.format(N)]['{}'.format(B)] = {}
@@ -22,10 +22,10 @@ for N in [4]:
             counts['{}'.format(N)]['{}'.format(B)]['{}'.format(s)] = {}
             for it in range(1, 101):
                 counts['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]['{}'.format(it)] = []
-                adapt_test = "./adapt_test_results/N_{}_B_{}_s_{}_it_{}_red_tsp_test_results.json".format(N, B, s, it)
+                adapt_test = "./compute_canada_res/adapt_test_results/N_{}_B_{}_s_{}_it_{}comp_tsp_test_results.json".format(N, B, s, it)
                 with open(adapt_test, 'r') as f:
                     adapt_data = json.load(f)
-                min_energy = "./adapt_test_results/N_{}_standard_inst_min_ener.json".format(N)
+                min_energy = "adapt_test_results/N_{}_standard_inst_min_ener.json".format(N)
                 with open(min_energy, 'r') as file:
                     min_ener = json.load(file)
                     for fq in range(N):
@@ -38,7 +38,7 @@ for N in [4]:
 
                             ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)].append(ratio)
 
-            max_ratio['{}_{}'.format(N, B)].append(np.max(ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]))
+            max_ratio['{}_{}'.format(N, B)].append(np.min(ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]))
 
             ratio_err['{}_{}'.format(N, B)].append(
                 np.std(ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]) / round(np.sqrt(len(
@@ -47,7 +47,7 @@ for N in [4]:
         # print(np.average(i_counts['{}'.format(N)]['{}'.format(B)]['{}'.format(d)]))
 figure, axs = plt.subplots(1, 1, figsize=(10, 8), dpi = 100)
 figure.suptitle(
-    "Ratio of hamiltonian path weights obtained with adapt Clifford and Christofides' algorithm.",
+    "Energy approximation ratio of adapt-TSP.",
     weight='bold')
 
 for i in range(1):#, axs in enumerate(axs.flatten()):
@@ -55,9 +55,9 @@ for i in range(1):#, axs in enumerate(axs.flatten()):
 
 
     # axis1 = axs[index]
-    B = [0.03]
+    B = [0.04]
 
-    x = np.arange(-2.0, -1.5, 0.5)
+    x = np.arange(-2.0, 2.0, 0.5)
     y1 = max_ratio['{}_{}'.format(N[i], B[0])]
 
     yerr1 = ratio_err['{}_{}'.format(N[i], B[0])]
@@ -71,10 +71,10 @@ for i in range(1):#, axs in enumerate(axs.flatten()):
     #axs.errorbar(x, y2, yerr2, marker="s", label='B = {}'.format(B[1]))
 
     axs.set_title('N = {}'.format(N[i]), weight='bold')
-    axs.set_ylabel('Adapt/Christo.')
+    axs.set_ylabel('Energy ratio')
     axs.set_xlabel('Graph Skewness')
 
-    axs.set_ylim(0.9, 1.1)
+    axs.set_ylim(0.7, 1.025)
 
     axs.set_xlim(-2.5, 2.5)
     if i == 3:
