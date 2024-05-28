@@ -38,7 +38,7 @@ for N in [4]:
 
                             ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)].append(ratio)
 
-            max_ratio['{}_{}'.format(N, B)].append(np.min(ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]))
+            max_ratio['{}_{}'.format(N, B)].append(np.max(ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]))
 
             ratio_err['{}_{}'.format(N, B)].append(
                 np.std(ratios['{}'.format(N)]['{}'.format(B)]['{}'.format(s)]) / round(np.sqrt(len(

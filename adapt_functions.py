@@ -76,7 +76,7 @@ def hamil_expectation_vals(terms, c: stim.TableauSimulator):
     
     vals = []
     for term in terms:
-        val = c.peek_observable_expectation(term)
+        val = round(c.peek_observable_expectation(term), 3)
         vals.append(val)
     #
     return vals
@@ -90,7 +90,7 @@ def current_energy(weights, hterms, c: stim.TableauSimulator):
     hterms: the vector of Hamiltonian terms
     """
     expects = hamil_expectation_vals(hterms, c)
-    return np.dot(weights, expects)
+    return round(np.dot(weights, expects), 3)
 #
 
 
@@ -186,8 +186,8 @@ def gradient(inaqubit, W, aqubits_k, aqubits_j, c: stim.TableauSimulator):
     lindex_k = np.intersect1d(np.nonzero(W[:,inaqubit])[0], aqubits_k)
     lindex_j = np.intersect1d(np.nonzero(W[:,inaqubit])[0], aqubits_j)
     
-    sum_weights_k = np.sum(W[ll, inaqubit] for ll in lindex_k)
-    sum_weights_j = np.sum(W[ll, inaqubit] for ll in lindex_j)
+    sum_weights_k = round(np.sum(W[ll, inaqubit] for ll in lindex_k), 3)
+    sum_weights_j = round(np.sum(W[ll, inaqubit] for ll in lindex_j), 3)
     
     grad_k = -sum_weights_k + sum_weights_j
     return grad_k

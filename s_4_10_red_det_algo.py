@@ -10,7 +10,7 @@ import os
 import time
 
 import adapt_functions as af
-import reduced_tsp_hamiltonian as H
+import tsp_hamiltonian as H
 
 def TSP_ver(N, fqubit, graph, path, energy, json_dic):
     path_edges = []
@@ -60,8 +60,7 @@ def TSP_ver(N, fqubit, graph, path, energy, json_dic):
         path_H = 'Is a hamiltonian path'
         for i in range(len(path_edges)):
           weight = graph[path_edges[i][0]][path_edges[i][1]]["weight"]
-          print(weight)
-          path_weight += weight 
+          path_weight += round(weight ,5)
     if not existent_path:
         path_H = 'Non-existent path'
     elif not node_occ or not all_nodes:
@@ -69,7 +68,6 @@ def TSP_ver(N, fqubit, graph, path, energy, json_dic):
     elif not loop:
         path_H = 'Not a solution to TSP'
 
-    print(path_H)
     json_dic["fqubit_{}".format(fqubit)] = {}
 
     json_dic["fqubit_{}".format(fqubit)]["is_H_path"] = path_H
@@ -92,9 +90,9 @@ def solve(json_dic, N, B, graph, fqubit):
 
     W = np.zeros(shape = (N**2 + 1, N**2 + 1), dtype = float)
 
-    W = H.adapt_tsp_hamiltonian(N, B, W, graph, fqubit)
+    W = H.adapt_tsp_hamiltonian(N, B, W, graph)
 
-    W = np.round_(W, decimals = 6)
+    W = np.round_(W, decimals = 3)
 
 
     ### system parameters
@@ -182,12 +180,12 @@ def main():
         with open(filename, 'r') as file:
             data = json.load(file)
     
-    for N in [4, 5, 6, 8, 10, 12]:
-        for s in np.arange(-2.0, 2.0, 0.5):
+    for N in [4]:
+        for s in [-1.5]:#np.arange(-2.0, 2.0, 0.5):
             s = np.round(s, 1)
 
             adj_mat = data["N_{}".format(N)]["s_{}".format(s)]
-            for it in range(0, 101):
+            for it in [16]:#range(0, 101):
    
                 graph = json_graph.adjacency_graph(adj_mat["it_{}".format(it)])
 
@@ -196,7 +194,7 @@ def main():
                     json_dic = {}
                     tsp_results = Parallel(n_jobs = int(number_of_cpus))(delayed(solve)(json_dic, N, B, graph, fqubit) for fqubit in range(1, N+1))
 
-                    with open("./N_{}_B_{}_s_{}_it_{}_red_tsp_test_results.json".format(N, B, s, it), "w") as outfile:
+                    with open("./N_{}_B_{}_s_{}_it_{}_comp_tsp_test_results.json".format(N, B, s, it), "w") as outfile:
                         json.dump(tsp_results, outfile)
     end = time.time()
 
