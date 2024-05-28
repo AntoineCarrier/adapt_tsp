@@ -2,10 +2,15 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+A file to compute and plot the energy approximation ratio of the adapt-Clifford algorithm.
+"""
+
 counts = {}
 ratios = {}
 max_ratio = {}
 ratio_err = {}
+
 
 for N in [4]:
     ratios['{}'.format(N)] = {}

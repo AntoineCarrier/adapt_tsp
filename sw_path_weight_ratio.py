@@ -2,6 +2,11 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+A file to plot the minimal path weights obtained with adapt-Clifford, nearest-neighbor and Christofides for comparison.
+"""
+
+
 counts = {}
 weight_l = {}
 weight_av = {}

@@ -12,6 +12,11 @@ import time
 import adapt_functions as af
 import tsp_hamiltonian as H
 
+"""
+A version of the deterministic algo code to be called on standard graph instances.
+"""
+
+
 def TSP_ver(N, fqubit, graph, path, energy, json_dic):
     path_edges = []
     for i in range(len(path)):
